@@ -1,0 +1,117 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>eHospital Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'assets/css/dashboard.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
+    {{ user.media }}
+</head>
+
+<body>
+  <div>
+        <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" style="background-color:rgb(241,236,236);padding:10px;height:50px;">
+            <div class="container"><a class="navbar-brand" href="{% url 'homepage' %}" style="font-size:20px;"><i class="fa fa-h-square" id="icon" style="font-size:30px;"></i>eHospitalNepal</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navcol-1">
+                    <ul class="nav navbar-nav mr-auto"></ul><span class="navbar-text actions"> <a href="#" class="login">About</a><a href="#" class="login">Contact</a>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'userlogout' %}" class="login">Log Out</a>
+                        {% else %}
+                        <a href="{% url 'patientuserlogin' %}" class="login">Log In</a>
+                        {% endif %}
+                        <a class="btn btn-light action-button" role="button" href="#">Sign Up</a></span></div>
+    </div>
+    </nav>
+    </div>
+
+    <div class="team-boxed">
+        <div class="container">
+            <!-- Start: Intro -->
+            <div class="intro">
+                <h2 class="text-center">Dashboard</h2>
+            </div>
+            <!-- End: Intro -->
+            <!-- Start: People -->
+            <div class="row people">
+                <div class="col-md-6 col-lg-4 item"></div>
+                <div class="col-md-6 col-lg-4 item">
+                    <div class="box"><img class="rounded-circle" src="{{ user.profile_picture.url }}">
+                        <h3 class="name">{{ user.username }}</h3>
+                        {% if user.is_patient %}
+                        <p class="title">Patient</p>
+                        {% else %}
+                        <p class="title">Doctor</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 item"></div>
+            </div>
+            <!-- End: People -->
+        </div>
+    </div>
+    <!-- End: Team Boxed -->
+    <div></div>
+
+    <div class="container">
+        <ul class="nav nav-tabs navbar2" style="background-color:#ebe2e2;">
+            <li class="nav-item listitems"><a class="nav-link active" href="{% url 'hospitalsnearby' %}">Find Hospitals Nearby</a></li>
+            <li class="nav-item listitems"><a class="nav-link" href="{% url 'makeappointment' %}">Make Appointment</a></li>
+            <li class="nav-item listitems"><a class="nav-link" href="{% url 'blogindex' %}">Health Blog</a></li>
+        </ul>
+        <div></div>
+    </div>
+    <div class="container">
+        <div role="tablist" id="accordion-1">
+            <div class="card">
+                <div class="card-header" role="tab">
+                    <h5 class="mb-0"><a data-toggle="collapse" aria-controls="accordion-1 .item-1" href="div#accordion-1 .item-1">Appointments</a></h5>
+                </div>
+                <div class="collapse show item-1" role="tabpanel" data-parent="#accordion-1">
+                    <div class="card-body">
+                        <p class="card-text">
+                        {% if appointments %}
+                        {% for appointment in appointments %}   
+                        {{ appointment.doctor }}
+                        {{ appointment.time }}
+                        {% endfor %}
+                        {% endif %}
+                        </p>
+                    </div>
+                </div>
+    <div class="footer-clean">
+        <footer>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-sm-4 col-md-3 item">
+                        <h3>Services</h3>
+                        <ul>
+                            <li><a href="{% url 'hospitalsnearby' %}">Nearest Hospitals</a></li>
+                            <li><a href="{% url 'makeappointment' %}">Make Appointments</a></li>
+                            <li></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4 col-md-3 item">
+                        <h3>About</h3>
+                        <ul>
+                            <li></li>
+                            <li><a href="{% url 'team' %}">Team</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a>
+                        <p class="copyright">eHospitalNepal© 2019</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

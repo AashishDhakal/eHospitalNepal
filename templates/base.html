@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="{% static 'bootstrap.css' %}" rel="stylesheet">    
+    <title>eHospitalNepal</title>
+</head>
+<body>
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                  <a class="navbar-brand" href="{% url 'homepage' %}">e-HospitalNepal</a>
+                  <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'hospitalsnearby' %}">Find Hospitals Nearby</a>
+                    </li>
+                    <li class="nav-item">
+                            <a class="nav-link" href="{% url 'blogindex' %}">Health Blog</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="{% url 'makeappointment' %}">Make Appointment</a>
+                          </li>
+                          {% if user.is_authenticated %}
+                          <li class="nav-item">
+                              <a class="nav-link" href="{% url 'userlogout' %}">Logout</a>
+                            </li>
+                          {% else %}
+                          <li class="nav-item">
+                              <a class="nav-link" href="{% url 'userlogin' %}">Login</a>
+                            </li>
+                          {% endif %}
+                  </ul>
+                  <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                  </form>
+                </div>
+              </nav>
+
+    <div class="container" >
+              <div id="demo" class="carousel slide" data-ride="carousel">
+
+                  <!-- Indicators -->
+                  <ul class="carousel-indicators">
+                    <li data-target="#demo" data-slide-to="0" class="active"></li>
+                    <li data-target="#demo" data-slide-to="1" ></li>
+                    <li data-target="#demo" data-slide-to="2" ></li>
+                  </ul>
+                
+                  <!-- The slideshow -->
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <img src={% static "images/carousel_logo.png" %} alt="Logo" width="100%" height="350">
+                    </div>
+                    <div class="carousel-item">
+                      <img src={% static "images/doctorimage.jpg" %} alt="Doctor" width="100%" height="350">
+                    </div>
+                    <div class="carousel-item">
+                      <img src={% static "images/doctorimage.jpg" %} alt="Doctor" width="100%" height="350">
+                    </div>
+                  </div>
+                
+                  <!-- Left and right controls -->
+                  <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                  </a>
+                  <a class="carousel-control-next" href="#demo" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                  </a>
+                </div>
+    </div>
+    <div class=container>
+    {%block content%}
+
+    {%endblock%}
+</div>

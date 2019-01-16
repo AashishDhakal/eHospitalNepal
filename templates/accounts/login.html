@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eHospital Nepal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
+    <link rel="stylesheet" href="{% static 'assets/css/login.css' %}">
+</head>
+
+<body>
+    <div>
+        <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" style="background-color:rgb(241,236,236);padding:10px;height:50px;">
+            <div class="container"><a class="navbar-brand" href="{% url 'homepage' %}" style="font-size:20px;"><i class="fa fa-h-square" id="icon" style="font-size:30px;"></i>eHospitalNepal</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div
+                    class="collapse navbar-collapse" id="navcol-1">
+                    <ul class="nav navbar-nav mr-auto"></ul><span class="navbar-text actions"> <a href="#" class="login">About</a><a href="#" class="login">Contact</a>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'userlogout' %}" class="login">Log Out</a>
+                        {% else %}
+                        <a href="{% url 'userlogin' %}" class="login">Log In</a>
+                        {% endif %}
+                        <a class="btn btn-light action-button" role="button" href="{% url 'patientusersignup' %}">Sign Up</a></span></div>
+    </div>
+    </nav>
+    </div>
+    <div class="jumbotron container">
+        <h1>Welcome To eHospital Nepal</h1>
+        <p>Find out the hospitals nearby you and make an appointment with your preferred doctor nearest to you.</p>
+        <p><a class="btn btn-primary" role="button" href="{% url 'doctorusersignup' %}">I am a Doctor</a><a class="btn btn-primary" role="button" href="{% url 'patientusersignup' %}">I am a Patient</a></p>
+        <div></div>
+    </div>
+    <div class="container">
+        <ul class="nav nav-tabs navbar2" style="background-color:#ebe2e2;">
+            <li class="nav-item listitems"><a class="nav-link" href="{% url 'hospitalsnearby' %}">Find Hospitals Nearby</a></li>
+            <li class="nav-item listitems"><a class="nav-link" href="{% url 'makeappointment' %}">Make Appointment</a></li>
+            <li class="nav-item listitems"><a class="nav-link" href="{% url 'blogindex' %}">Health Blog</a></li>
+        </ul>
+        <div></div>
+    </div>
+    <div class="article-clean">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2" id="logintitle">
+                    <div class="intro">
+                        <h1 class="text-center">Login</h1>
+                        <p class="text-center"> </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <form method="post" id="loginform" action="{% url 'userlogin' %}" >
+              {% csrf_token %}
+              <label for="username">Username:</label>
+              <input class="form-control" type="text" name="username" placeholder="Enter Your Username">
+              <label for='password'>Password:</label>
+              <input class="form-control" type="password" name="password" placeholder="Enter Your Password">
+              <button class="btn btn-primary" type="submit" id="loginbutton">login</button></form>
+        </div>
+    </div>
+    <div class="footer-clean">
+        <footer>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-sm-4 col-md-3 item">
+                        <h3>Services</h3>
+                        <ul>
+                            <li><a href="{% url 'hospitalsnearby' %}">Nearest Hospitals</a></li>
+                            <li><a href="{% url 'makeappointment' %}">Make Appointments</a></li>
+                            <li></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4 col-md-3 item">
+                        <h3>About</h3>
+                        <ul>
+                            <li></li>
+                            <li><a href="{% url 'team' %}">Team</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a>
+                        <p class="copyright">eHospitalNepal© 2019</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
