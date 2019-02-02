@@ -27,7 +27,11 @@ SECRET_KEY = 'b1jy#9cth2=cfhqvu$)+gdd$q$k27o_h+5bq&r1@rm)bq0yee9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'ehospitalnepal.serveo.net',
+    '192.168.100.64'
+]
 
 
 # Application definition
@@ -39,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'leaflet',
     'django.contrib.gis',
     'bootstrap3_datetime',
     'datetimewidget',
@@ -46,6 +51,7 @@ INSTALLED_APPS = [
     'blog',
     'hospital',
     'appointments',
+    'twilio',
 ]
 
 MIDDLEWARE = [
@@ -122,6 +128,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -143,7 +151,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
-
 MEDIA_ROOT= MEDIA_DIR
 MEDIA_URL='/media/'
 
