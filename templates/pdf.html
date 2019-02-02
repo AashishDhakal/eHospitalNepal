@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Appointment Ticket</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'pdf.css' %}">
+</head>
+
+<body>
+    <div class="container"><img class="img-thumbnail img-fluid" src="{% static 'images/logo.png' %}" id="ehospitallogo" style="width: 15%;height: 12%;margin: 0 1% 0 2%;"><img class="img-fluid" src="{{ appointmentticket.hospital.logo.url }}" style="margin: 1% 0 1% 22.5%;">
+    <h5 class="text-center"><strong>APPOINTMENT TICKET</strong></h5>
+    <p class="text-right" style="margin: 0 2% 0 0;">Appointment Date/Time:&nbsp;<br>{{ appointmentticket.date }}</p>
+    <!-- Start: 1 Row 1 Column -->
+    <div></div>
+    <!-- End: 1 Row 1 Column -->
+    <!-- Start: 1 Row 2 Columns -->
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Doctor's Name: {{ appointmentticket.doctor }}<br><br><strong>PATIENT'S</strong>&nbsp;<strong>DETAILS</strong><br>Name: {{ appointmentticket.patient_name }}<br><br></p>
+                </div>
+                <div class="col-md-6"></div>
+            </div>
+        </div>
+    </div>
+    <!-- End: 1 Row 2 Columns --><img src="{% static 'images/paid.png' %}" style="width: 8%;margin: 0 0 -2% 89.5%;">
+    <p class="text-right" style="margin: 0.5% 4% 0 0;"><strong><span style="text-decoration: underline;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></strong><br>STATUS</p>
+    <p class="text-center"><em>(Please take this ticket with you while you visit the doctor.)</em></p>
+    <div style="background-color: black;height: 1px;width: 95%;margin: -1% 0 2% 2%;"></div>
+    <!-- Start: 1 Row 1 Column -->
+    <div>
+        <p style="font-size: 20px;padding: 0 0 12% 0;margin: 0 0 0 2%;"><span style="text-decoration: underline;">Symptoms (and their duration)</span><br></p>
+        <p style="font-size: 20px;padding: 0 0  11% 0;margin: 0 0 0 2%;"><span style="text-decoration: underline;">Patient's History</span><br></p>
+        <p style="font-size: 20px;padding: 0 0 8% 0;margin: 0 0 0 2%;"><span style="text-decoration: underline;">Prescription</span></p>
+        <p style="padding: 0 0 5% 0;margin: 0 0 0 2%;"><em><span style="text-decoration: underline;">Other Tests (if required)</span></em></p>
+        <p class="text-right" style="margin: 0 2% 2% 0;"><span style="text-decoration: underline;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span><br><em>Doctor's Signature</em></p>
+    </div></div>
+    <!-- End: 1 Row 1 Column -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

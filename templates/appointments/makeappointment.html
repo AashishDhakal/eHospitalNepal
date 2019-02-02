@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
     <link rel="stylesheet" href="{% static 'assets/css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap.css' %}">
     {{ form.media }}
 </head>
 
@@ -22,12 +23,13 @@
                 <div
                     class="collapse navbar-collapse" id="navcol-1">
                     <ul class="nav navbar-nav mr-auto"></ul><span class="navbar-text actions"> <a href="#" class="login">About</a><a href="#" class="login">Contact</a>
-                      {% if user.is_authenticated %}
-                      <a href="{% url 'userlogout' %}" class="login">Log Out</a>
-                      {% else %}
-                      <a href="{% url 'userlogin' %}" class="login">Log In</a>
-                      {% endif %}
-                      <a class="btn btn-light action-button" role="button" href="{% url 'patientusersignup' %}">Sign Up</a></span></div>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'userlogout' %}" class="login">Log Out</a>
+                        <a class="btn btn-light action-button" role="button" href="{% url 'dashboard' %}">Dashboard</a></span>
+                        {% else %}
+                        <a href="{% url 'userlogin' %}" class="login">Log In</a>
+                        <a class="btn btn-light action-button" role="button" href="{% url 'patientusersignup' %}">Sign Up</a></span>
+                        {% endif %}
     </div>
     </nav>
     </div>
@@ -57,9 +59,10 @@
             </div>
         </div>
         <div class="container">
-            <form method="post" id="loginform" class= "appointment-form" >
+            <form method="post" id="loginform" class= "appointment-form" enctype="multipart/form-data">
               {% csrf_token %}
               {{form.as_p}}
+              
               <button class="btn btn-primary" type="submit" id="loginbutton">Make Appointment</button>
               <button class="btn btn-primary" type="reset" id="loginbutton">Reset</button>
             </form>

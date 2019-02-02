@@ -1,0 +1,29 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>eHospital Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'assets/css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
+    {{ user.media }}
+</head>
+
+<body>
+<div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2" >
+<button type="button" class="list-group-item list-group-item-action active">
+    eHospitalNepal Ambulance
+</button>
+<form method="post" id="loginform" >
+    {% csrf_token %}
+    {{form.as_p}}
+<button class="btn btn-primary" type="submit" id="loginbutton"><i class='fa fa-send'></i>Send</button></form>
+</div>
+</body>
+</html>

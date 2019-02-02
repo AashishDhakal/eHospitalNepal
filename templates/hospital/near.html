@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load leaflet_tags %}
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eHospital Nepal</title>
+    {% leaflet_css %}
+    {% leaflet_js %}
+    <style>
+
+            .leaflet-container {  /* all maps */
+                width:  100%;
+                height: 500px;
+            }
+        
+            #specialbigmap {
+                height: 800px;
+            }
+        
+        </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
+    <link rel="stylesheet" href="{% static 'assets/css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap.css' %}">
+</head>
+<body onload="init();">
+<div class="container">
+            <form method="post" id="loginform" action="./" >
+              {% csrf_token %}
+              {{form.as_p}}
+              <button class="btn btn-primary" type="submit" id="loginbutton"><i class="fa fa-search" id="icon" style="font-size:30px;"></i>Search</button></form>
+              <div class="row" id="hospitalnear">
+                    <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2" >
+                            <button type="button" class="list-group-item list-group-item-action active">
+                            Hospitals Near You
+                            </button>
+                            {% for hospital in hospitals %}
+                            <button type="button" class="list-group-item list-group-item-action ">
+                            <p><b>{{ hospital.name }}</b> {{ hospital.distance }} away</p>
+                            </button>
+                            {% endfor %}
+                            </div></div>
+              {% leaflet_map "main" callback="map_init" %}
+              <script type="text/javascript">
+                function map_init(map, options) {
+                    // get point lat and lon
+                    {% for hospital in hospitals %}
+                    var lon = "{{ hospital.location.y }}";
+                    var lat = "{{ hospital.location.x }}";
+                    // zoom to point & add it to map
+                    map.setView([lat, lon], 12);
+                    var marker = L.marker([lat, lon],{
+                        title:"{{ hospital.name }}"
+                    }).addTo(map);
+                    marker.bindPopup("<p>{{ hospital.name }}</p><p>Distance:{{ hospital.distance }}</p>").openPopup();
+                    {% endfor %}
+                }
+            </script>
+              
+        </div>
+
+    </div>
+</body>

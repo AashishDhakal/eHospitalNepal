@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'assets/css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
     {{ user.media }}
@@ -22,31 +23,32 @@
                     <ul class="nav navbar-nav mr-auto"></ul><span class="navbar-text actions"> <a href="#" class="login">About</a><a href="#" class="login">Contact</a>
                         {% if user.is_authenticated %}
                         <a href="{% url 'userlogout' %}" class="login">Log Out</a>
+                        <a class="btn btn-light action-button" role="button" href="{% url 'dashboard' %}">Dashboard</a></span>
                         {% else %}
-                        <a href="{% url 'patientuserlogin' %}" class="login">Log In</a>
+                        <a href="{% url 'userlogin' %}" class="login">Log In</a>
+                        <a class="btn btn-light action-button" role="button" href="{% url 'patientusersignup' %}">Sign Up</a></span>
                         {% endif %}
-                        <a class="btn btn-light action-button" role="button" href="#">Sign Up</a></span></div>
     </div>
     </nav>
     </div>
 
     <div class="team-boxed">
         <div class="container">
-            <!-- Start: Intro -->
-            <div class="intro">
-                <h2 class="text-center">Dashboard</h2>
-            </div>
-            <!-- End: Intro -->
-            <!-- Start: People -->
             <div class="row people">
                 <div class="col-md-6 col-lg-4 item"></div>
                 <div class="col-md-6 col-lg-4 item">
-                    <div class="box"><img class="rounded-circle" src="{{ user.profile_picture.url }}">
+                    {% if is_patient %}
+                    <div class="box"><img class="rounded-circle" src="{{ user.patient.profile_picture.url }}">
+                    {% else %}
+                    <div class="box"><img class="rounded-circle" src="{{ user.doctor.profile_picture.url }}">
+                    {% endif %}
                         <h3 class="name">{{ user.username }}</h3>
-                        {% if user.is_patient %}
+                        {% if is_patient %}
                         <p class="title">Patient</p>
+                        <p class="title">Your Balance:{{ patientbalance }}</p>
                         {% else %}
                         <p class="title">Doctor</p>
+                        <p class="title">Your Balance:{{ doctorbalance }}</p>
                         {% endif %}
                     </div>
                 </div>
@@ -67,23 +69,152 @@
         <div></div>
     </div>
     <div class="container">
-        <div role="tablist" id="accordion-1">
-            <div class="card">
-                <div class="card-header" role="tab">
-                    <h5 class="mb-0"><a data-toggle="collapse" aria-controls="accordion-1 .item-1" href="div#accordion-1 .item-1">Appointments</a></h5>
-                </div>
-                <div class="collapse show item-1" role="tabpanel" data-parent="#accordion-1">
-                    <div class="card-body">
-                        <p class="card-text">
+        <div class="row">
+                <div class="list-group col-md-6" id='appointmentlist'>
+                        <button type="button" class="list-group-item list-group-item-action active">
+                        Appointments
+                        </button>
                         {% if appointments %}
-                        {% for appointment in appointments %}   
-                        {{ appointment.doctor }}
-                        {{ appointment.time }}
+                        {% for appointments in appointments %}
+                        <button type="button" class="list-group-item list-group-item-action">
+                        <p><b>Doctor:</b>{{ appointments.doctor }}</p>
+                        <p><b>Date:</b>{{ appointments.date }} at {{ appointments.time }}</p>
+                        <p><b>Ticket:</b><a href="{% url 'viewticket' appointments.id %}" >Download Ticket</a></p>
+                        </button>
                         {% endfor %}
                         {% endif %}
-                        </p>
+                        {% if dappointments %}
+                        {% for dappointments in dappointments %}
+                        <button type="button" class="list-group-item list-group-item-action"> 
+                        <p><b>Patient:</b>{{ dappointments.patient_name }}</p>
+                        <p><b>Date:</b>{{ dappointments.date }} at {{ dappointments.time }}</p>
+                        </button>
+                        {% endfor %}
+                        {% endif %}
                     </div>
+            {% if is_patient %}
+            <div class="list-group col-md-6" id='appointmentlist'>
+                    <button type="button" class="list-group-item list-group-item-action active">
+                    Manage Medical Reports
+                    </button>
+                    {% if reports %}
+                    {% for report in reports %}   
+                    <button type="button" class="list-group-item list-group-item-action">
+                    <p><b>Report:</b>{{ report.report_name }}</p>
+                    <p><b>Date:</b>{{ report.report_date }}</p>
+                    <p><a href="{{ user.patient.reportupload.report.url }}"><b><i class="fa fa-eye" id="icon" style="font-size:30px;"></i>Preview</b></a></p>
+                    </button>
+                    {% endfor %}
+                    {% endif %}
+                    <a class="btn btn-primary" role="button" href="javascript:window.open('{% url 'reportupload' %}' , 'eHospitalNepal Message', 'width=600,height=500');"><i class="fa fa-folder-open" id="icon" style="font-size:30px;"></i>Upload</a>
                 </div>
+                {% endif %} 
+                <div class="row"></div>
+                <div class="list-group col-md-6" id="appointmentlist">
+                        <button type="button" class="list-group-item list-group-item-action active">
+                        Nearby Hospitals
+                        </button>
+                        <button type="button" class="list-group-item list-group-item-action" id='nearbyhospital'>
+                        <iframe id="encoder_iframe" height=100% width="100%" src="{% url 'nearby' %}" frameBorder='0'>
+                        </iframe>
+                        </button>
+                    </div>
+            <div class="container">
+            <div class="row">
+            <div class="list-group col-md-6" id="appointmentlist">
+                    <button type="button" class="list-group-item list-group-item-action active">
+                        Need an Ambulance?
+                        </button>
+                        <a class="btn btn-primary" role="button" id="ambulance" href="javascript:window.open('{% url 'sendsms' %}' , 'eHospitalNepal Ambulance', 'width=600,height=500');"><i class="fa fa-automobile" id="icon" style="font-size:30px;"></i>Call Ambulance</a>
+            </div>
+            <div class="list-group col-md-6" id="appointmentlist">
+                    <button type="button" class="list-group-item list-group-item-action active">
+                        Need Pathologist?
+                        </button>
+                        <a class="btn btn-primary" role="button" id="ambulance" href="javascript:window.open('{% url 'sendsmstest' %}' , 'eHospitalNepal Pathology', 'width=600,height=500');"><i class="fa fa-medkit" id="icon" style="font-size:30px;"></i>Call Pathologist</a>
+            </div>
+            </div></div>
+            </div></div>
+            <div class="container">
+                    <button type="button" class="list-group-item list-group-item-action active">
+                    eHospitalNepal Message
+                    </button>
+                    <div class="row">
+                    <div class="list-group col-md-6" id='appointmentlist'>
+                    {% if appointments %}
+                    {% for appointment in appointments %}
+                    {% for sent in sent%}
+                    <button type="button" id="right" class="list-group-item list-group-item-action">
+                    <p><b>You:</b>{{ sent.message }}</p>
+                    <img class='fluid' src="{{ appointment.image.url }}" width="100px" height="100px" />
+                    </button>
+                    <button type="button" id="blank" class="list-group-item list-group-item-action"></button>
+                    {% endfor %}
+                    {% for sent in psent%}
+                    <button type="button" id="right" class="list-group-item list-group-item-action">
+                    <p><b>You:</b>{{ sent.message }}</p>
+                    </button>
+                    <button type="button" id="blank" class="list-group-item list-group-item-action">
+                        </button>
+                    {% endfor %}
+                    </div>
+
+                    <div class="list-group col-md-6" id='appointmentlist'>
+                    {% for inbox in dinbox%}
+                    <button type="button" id="blank" class="list-group-item list-group-item-action">
+                    </button>
+                    <button type="button" id="left" class="list-group-item list-group-item-action">
+                    <p><b>{{ appointment.doctor }}:</b>{{ inbox.message }}<p>
+                    </button>
+                    {% endfor %}
+                    </div>
+                    <a class="btn btn-primary action-button" role="button" href="javascript:window.open('{% url 'pmessage' %}' , 'eHospitalNepal Message', 'width=600,height=500');"><i class="fa fa-reply-all" id="icon" style="font-size:30px;"></i>Reply</a>
+                    {% endfor %}
+                    {% endif %}
+                    </div>
+                    
+                    
+                    {% if dappointments %}
+                    {% for appointments in dappointments%}
+                    <div class="container">
+                    <div class="row">
+                    <div class="list-group col-md-6" id='appointmentlist'>
+                    {% for inbox in inbox%}
+                    <button type="button" id="right" class="list-group-item list-group-item-action">
+                    <p><b>{{ appointments.patient_name }}:</b>{{ inbox.message }}</p>
+                         <img class='fluid' src="{{ appointments.image.url }}" width="100px" height="100px" />
+                    </button>
+                    <button type="button" id="blank" class="list-group-item list-group-item-action">
+                    </button>
+                    {% endfor %}
+                    {% for inbox in pinbox%}
+                    <button type="button" id="right" class="list-group-item list-group-item-action">
+                    <p><b>{{ appointments.patient_name }}:</b>{{ inbox.message }}</p>
+                    </button>
+                    <button type="button" id="blank" class="list-group-item list-group-item-action">
+                    </button>
+                    {% endfor %}
+                    </div>
+                    <div class="list-group col-md-6" id='appointmentlist'>
+                    {% for sent in dsent%}
+                    <button type="button" id="blank" class="list-group-item list-group-item-action">
+                    </button>
+                    <button type="button" id="left" class="list-group-item list-group-item-action">
+                    <p id="left"><b>You:</b>{{ sent.message }}</p>
+                    </button>
+                    {% endfor %}
+                    <div class="row">
+                        <div class="list-group col-md-6">
+                        <a class="btn btn-primary action-button" role="button" href="javascript:window.open('{% url 'dmessage' %}' , 'eHospitalNepal Message', 'width=600,height=500');"><i class="fa fa-reply-all" id="icon" style="font-size:30px;"></i>Reply</a>
+                        </div>
+                        <div class="list-group col-md-6">
+                        <a class="btn btn-primary" role="button" href="javascript:window.open('{% url 'reportupload' %}' , 'eHospitalNepal Message', 'width=600,height=500');"><i class="fa fa-folder-open" id="icon" style="font-size:30px;"></i>Send Report</a>
+                        </div>
+                    {% endfor %}
+                    {% endif %}
+                    
+                  </div>
+        </div></div>
     <div class="footer-clean">
         <footer>
             <div class="container">

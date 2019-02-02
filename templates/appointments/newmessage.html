@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eHospital Nepal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
+    <link rel="stylesheet" href="{% static 'assets/css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap.css' %}">
+</head>
+<body>
+            <div class="container">
+                    <div class="row">
+                        <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2" id="logintitle">
+                            <div class="intro">
+                                <h1 class="text-center">Send Message</h1>
+                                <p class="text-center"> </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    <div>
+        <form class='form-control' id='loginform' method="POST">
+            {% csrf_token %}
+        {{ messageform.as_p }}
+        <input type="submit" class="btn btn-primary" id='loginbutton' value="Send" >
+    </form>
+    </div>
+</body>
+</html>
